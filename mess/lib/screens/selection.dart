@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:mess/screens/menu.dart';
 
 class Selection extends StatefulWidget {
   const Selection({super.key});
@@ -10,6 +13,18 @@ class Selection extends StatefulWidget {
 
 class _SelectionState extends State<Selection> {
   String _selectedMess = 'Sannasi';
+
+  void _updateMess(String newValue) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selectedMess', newValue);
+  }
+
+  void _navigate(BuildContext context) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => Menu()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,13 +33,18 @@ class _SelectionState extends State<Selection> {
         child: Container(
           width: MediaQuery.of(context).size.width * 0.8, 
           height: MediaQuery.of(context).size.height * 0.8,
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 2),
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 2),
           decoration: const BoxDecoration(
             color: Color.fromARGB(255, 24, 31, 52),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Image.asset(
+                'assets/images/ap1.gif',
+                height: 80,
+              ),
+              const SizedBox(height: 20,),
               Text(
                 'Select Your Mess',
                 style: GoogleFonts.bangers(
@@ -69,7 +89,8 @@ class _SelectionState extends State<Selection> {
                   backgroundColor:const Color.fromARGB(255, 24, 31, 52),
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/home');
+                  _updateMess(_selectedMess); // Update selected mess in local storage
+                  _navigate(context);
                 },
                 child: Text(
                   'Submit',
