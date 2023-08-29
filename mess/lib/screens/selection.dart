@@ -14,14 +14,14 @@ class Selection extends StatefulWidget {
 class _SelectionState extends State<Selection> {
   String _selectedMess = 'Sannasi';
 
-  void _updateMess(String newValue) async {
+  void _updateMess(String selectedMess) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('selectedMess', newValue);
+    await prefs.setString('selectedMess', selectedMess);
   }
 
   void _navigate(BuildContext context) {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => Menu()),
+      MaterialPageRoute(builder: (context) => const MenuScreen()),
     );
   }
 
